@@ -1,0 +1,8 @@
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="Google Home Page">
+    <test name="Google Home Page">
+        <classes>
+            <class name="com.org.codewithsitangshu.eyeSpyTest.web.google.GoogleTest"/>
+        </classes>
+    </test>
+</suite>

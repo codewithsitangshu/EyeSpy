@@ -32,7 +32,9 @@ public class SnapshotBuilderImpl implements SnapshotBuilder {
 
     @Override
     public SnapshotBuilder replaceAttribute(String id, String value) {
-        return null;
+        String newPath = snapshotAttributes.getSnapshotPath().toString().replaceAll("\\#\\{" + id + "}", value);
+        snapshotAttributes.setSnapshotPath(Paths.get(newPath));
+        return this;
     }
 
     @Override
