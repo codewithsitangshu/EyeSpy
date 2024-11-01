@@ -1,5 +1,6 @@
 package com.org.codewithsitangshu.eyeSpy.sample;
 
+import com.org.codewithsitangshu.eyeSpy.EyeSpy;
 import com.org.codewithsitangshu.eyeSpy.comparator.EyeSpyComparator;
 import com.org.codewithsitangshu.eyeSpy.comparator.EyeSpyResult;
 import com.org.codewithsitangshu.eyeSpy.comparator.ImageUtil;
@@ -21,6 +22,7 @@ public class SampleBuilderImpl implements SampleBuilder {
     private BufferedImage sample;
     private List<WebElement> exclusionList = new LinkedList<WebElement>();
     private SnapshotAttributes snapshotAttributes;
+    private SampleAttributes sampleAttributes = new SampleAttributes();
 
     public SampleBuilderImpl(SnapshotAttributes snapshotAttributes) {
         this.snapshotAttributes = snapshotAttributes;
@@ -28,12 +30,14 @@ public class SampleBuilderImpl implements SampleBuilder {
 
     public SampleBuilder using(WebDriver driver) {
         this.driver = driver;
+        resolvePath();
         return this;
     }
 
     public SampleBuilder using(Path path) {
         try {
             this.sample = ImageIO.read(path.toFile());
+            this.sampleAttributes.setSamplePath(path);
         } catch (IOException e) {
             throw new EyeSpyException(e.getMessage() + " " + path.toString());
         }
@@ -64,7 +68,11 @@ public class SampleBuilderImpl implements SampleBuilder {
         if(null==this.sample){
             this.sample =ImageUtil.getPageSnapshot(this.driver);
         }
-        return EyeSpyComparator.compare(this.snapshotAttributes, this.sample, this.exclusionList);
+        return EyeSpyComparator.compare(this.snapshotAttributes, this.sample, this.sampleAttributes, this.exclusionList);
+    }
+
+    private void resolvePath() {
+        sampleAttributes.setSamplePath(EyeSpy.config().getSamplePath().resolve(snapshotAttributes.getSnapValue()));
     }
 
 

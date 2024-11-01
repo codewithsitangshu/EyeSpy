@@ -33,7 +33,11 @@ public class SnapshotBuilderImpl implements SnapshotBuilder {
     @Override
     public SnapshotBuilder replaceAttribute(String id, String value) {
         String newPath = snapshotAttributes.getSnapshotPath().toString().replaceAll("\\#\\{" + id + "}", value);
+        Path path = Paths.get(newPath);
+        String fileName = path.getFileName().toString();
+
         snapshotAttributes.setSnapshotPath(Paths.get(newPath));
+        snapshotAttributes.setSnapValue(fileName);
         return this;
     }
 
@@ -55,9 +59,11 @@ public class SnapshotBuilderImpl implements SnapshotBuilder {
         if (!klass.isAnnotationPresent(Snap.class))
             throw new EyeSpyException("Snap annotation is not present for type : " + klass.getName());
 
-        Snap baseline = klass.getAnnotation(Snap.class);
-        snapshotAttributes.setSimilarity(baseline.similarity());
-        resolvePath(Paths.get(baseline.value()));
+        Snap snap = klass.getAnnotation(Snap.class);
+        snapshotAttributes.setSimilarity(snap.similarity());
+        String snapValue = snap.value();
+        snapshotAttributes.setSnapValue(snapValue);
+        resolvePath(Paths.get(snapValue));
     }
 
     private void resolvePath(Path path){

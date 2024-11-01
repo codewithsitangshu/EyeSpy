@@ -1,22 +1,16 @@
 package com.org.codewithsitangshu.eyeSpy.comparator;
 
-import java.awt.AlphaComposite;
-import java.awt.Color;
-import java.awt.Graphics2D;
+import com.org.codewithsitangshu.eyeSpy.exception.EyeSpyException;
+import org.arquillian.rusheye.oneoff.ImageUtils;
+import org.openqa.selenium.Point;
+import org.openqa.selenium.*;
+
+import javax.imageio.ImageIO;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
-
-import javax.imageio.ImageIO;
-
-import com.org.codewithsitangshu.eyeSpy.exception.EyeSpyException;
-import org.arquillian.rusheye.oneoff.ImageUtils;
-import org.openqa.selenium.OutputType;
-import org.openqa.selenium.Point;
-import org.openqa.selenium.TakesScreenshot;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 
 public class ImageUtil {
 

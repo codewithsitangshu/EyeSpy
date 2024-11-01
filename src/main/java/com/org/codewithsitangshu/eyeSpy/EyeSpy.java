@@ -19,7 +19,8 @@ public class EyeSpy {
 
         private static final EyeSpyConfig config = new EyeSpyConfigImpl();
 
-        private Path snapshotpath;
+        private Path baselineSnapshotpath;
+        private Path currentSnapshotpath;
         private Path resultpath;
         private int similarity = 100;
         private boolean savesnapshot = true;
@@ -31,7 +32,13 @@ public class EyeSpy {
         }
 
         public EyeSpyConfig setSnapshotPath(Path path) {
-            this.snapshotpath = path;
+            this.baselineSnapshotpath = path;
+            return this;
+        }
+
+        @Override
+        public EyeSpyConfig setSamplePath(Path path) {
+            this.currentSnapshotpath = path;
             return this;
         }
 
@@ -46,7 +53,12 @@ public class EyeSpy {
         }
 
         public Path getSnapshotPath() {
-            return snapshotpath;
+            return baselineSnapshotpath;
+        }
+
+        @Override
+        public Path getSamplePath() {
+            return currentSnapshotpath;
         }
 
         public Path getResultPath() {
@@ -67,7 +79,8 @@ public class EyeSpy {
         }
 
         public void reset() {
-            this.snapshotpath = null;
+            this.baselineSnapshotpath = null;
+            this.currentSnapshotpath = null;
             this.resultpath = null;
             this.similarity = 100;
             this.savesnapshot = true;

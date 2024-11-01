@@ -1,8 +1,8 @@
 package com.org.codewithsitangshu.eyeSpyTest.web;
 
-import com.org.codewithsitangshu.driver.DriverManager;
-import com.org.codewithsitangshu.driver.DriverModule;
-import com.org.codewithsitangshu.driver.DriverType;
+import com.org.codewithsitangshu.util.driver.DriverManager;
+import com.org.codewithsitangshu.util.driver.DriverModule;
+import com.org.codewithsitangshu.util.driver.DriverType;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.WebDriver;

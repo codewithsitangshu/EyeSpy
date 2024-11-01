@@ -1,4 +1,4 @@
-package com.org.codewithsitangshu.driver;
+package com.org.codewithsitangshu.util.driver;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

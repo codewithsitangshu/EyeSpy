@@ -11,6 +11,7 @@ public class SnapshotAttributes {
 
     private Path snapshotPath;
     private int similarity = -1;
+    private String snapValue;
 
     public Path getSnapshotPath() {
         return snapshotPath;
@@ -26,6 +27,14 @@ public class SnapshotAttributes {
 
     public void setSimilarity(int similarity) {
         this.similarity = similarity;
+    }
+
+    public String getSnapValue() {
+        return snapValue;
+    }
+
+    public void setSnapValue(String snapValue) {
+        this.snapValue = snapValue;
     }
 
     public Perception getPerception(){
