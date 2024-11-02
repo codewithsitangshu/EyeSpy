@@ -1,8 +1,11 @@
 package com.org.codewithsitangshu.eyeSpy;
 
+import com.org.codewithsitangshu.eyeSpy.exception.EyeSpyException;
 import com.org.codewithsitangshu.eyeSpy.snapshot.SnapshotBuilder;
 import com.org.codewithsitangshu.eyeSpy.snapshot.SnapshotBuilderImpl;
 
+import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 
 public class EyeSpy {
@@ -33,17 +36,20 @@ public class EyeSpy {
 
         public EyeSpyConfig setSnapshotPath(Path path) {
             this.baselineSnapshotpath = path;
+            resolvePath(path);
             return this;
         }
 
         @Override
         public EyeSpyConfig setSamplePath(Path path) {
             this.currentSnapshotpath = path;
+            resolvePath(path);
             return this;
         }
 
         public EyeSpyConfig setResultPath(Path path) {
             this.resultpath = path;
+            resolvePath(path);
             return this;
         }
 
@@ -84,6 +90,14 @@ public class EyeSpy {
             this.resultpath = null;
             this.similarity = 100;
             this.savesnapshot = true;
+        }
+
+        private void resolvePath(Path path) {
+            try {
+                Files.createDirectories(path);
+            } catch (IOException e) {
+                throw new EyeSpyException(e.getMessage() + " " + path.toString());
+            }
         }
     }
 

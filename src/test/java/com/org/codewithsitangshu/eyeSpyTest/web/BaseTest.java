@@ -1,5 +1,6 @@
 package com.org.codewithsitangshu.eyeSpyTest.web;
 
+import com.org.codewithsitangshu.eyeSpy.EyeSpy;
 import com.org.codewithsitangshu.util.driver.DriverManager;
 import com.org.codewithsitangshu.util.driver.DriverModule;
 import com.org.codewithsitangshu.util.driver.DriverType;
@@ -7,6 +8,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.WebDriver;
 import org.testng.annotations.*;
+
+import java.nio.file.Paths;
 
 public class BaseTest {
 
@@ -26,6 +29,16 @@ public class BaseTest {
             logger.error("Invalid browser type provided: " + browser, e);
             throw new IllegalArgumentException("Invalid browser type provided: " + browser, e);
         }
+    }
+
+    @BeforeTest
+    public void eyeSpyConfig() {
+        EyeSpy.config()
+                .setResultPath(Paths.get("images/result"))
+                .setSnapshotPath(Paths.get("images/baseline"))
+                .setSamplePath(Paths.get("images/current"))
+                //.setGlobalSimilarity(100)
+                .isSaveSnapshot(true);
     }
 
     @BeforeMethod
