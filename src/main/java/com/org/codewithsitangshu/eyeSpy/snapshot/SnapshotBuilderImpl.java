@@ -61,6 +61,7 @@ public class SnapshotBuilderImpl implements SnapshotBuilder {
 
         Snap snap = klass.getAnnotation(Snap.class);
         snapshotAttributes.setSimilarity(snap.similarity());
+        snapshotAttributes.setType(snap.type());
         String snapValue = snap.value();
         snapshotAttributes.setSnapValue(snapValue);
         resolvePath(Paths.get(snapValue));

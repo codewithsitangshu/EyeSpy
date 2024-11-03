@@ -10,7 +10,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
-@Snap(value = "Google-#{Title}.png",similarity = 100)
+@Snap(value = "Google-#{Title}.png",similarity = 100,type = "full")
 public class GoogleHomePage {
 
     @FindBy(css = "div.RNNXgb")

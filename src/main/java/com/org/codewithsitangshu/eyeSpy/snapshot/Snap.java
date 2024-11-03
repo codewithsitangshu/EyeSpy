@@ -10,4 +10,5 @@ import java.lang.annotation.Target;
 public @interface Snap {
     String value() default "";
     int similarity() default -1;
+    String type() default "";
 }

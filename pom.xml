@@ -41,6 +41,12 @@
     </dependency>
 
     <dependency>
+      <groupId>ru.yandex.qatools.ashot</groupId>
+      <artifactId>ashot</artifactId>
+      <version>${ashot.version}</version>
+    </dependency>
+
+    <dependency>
       <groupId>org.testng</groupId>
       <artifactId>testng</artifactId>
       <version>${testng.version}</version>
@@ -64,12 +70,6 @@
       <groupId>org.arquillian.rusheye</groupId>
       <artifactId>rusheye-impl</artifactId>
       <version>${rusheye-impl.version}</version>
-    </dependency>
-
-    <dependency>
-      <groupId>ru.yandex.qatools.ashot</groupId>
-      <artifactId>ashot</artifactId>
-      <version>${ashot.version}</version>
     </dependency>
 
   </dependencies>

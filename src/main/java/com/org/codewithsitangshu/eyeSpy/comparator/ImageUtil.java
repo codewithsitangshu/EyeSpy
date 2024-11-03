@@ -1,9 +1,14 @@
 package com.org.codewithsitangshu.eyeSpy.comparator;
 
+import com.org.codewithsitangshu.eyeSpy.EyeSpy;
 import com.org.codewithsitangshu.eyeSpy.exception.EyeSpyException;
 import org.arquillian.rusheye.oneoff.ImageUtils;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.*;
+import ru.yandex.qatools.ashot.AShot;
+import ru.yandex.qatools.ashot.Screenshot;
+import ru.yandex.qatools.ashot.coordinates.WebDriverCoordsProvider;
+import ru.yandex.qatools.ashot.shooting.ShootingStrategies;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -17,7 +22,30 @@ public class ImageUtil {
     private final static AlphaComposite COMPOSITE = AlphaComposite.getInstance(AlphaComposite.CLEAR);
     private final static Color TRANSPARENT = new Color(0, 0, 0, 0);
 
-    public static BufferedImage getPageSnapshot(WebDriver driver) {
+    public static BufferedImage getPageSnapshot(WebDriver driver, String snapshotType) {
+        BufferedImage page = null;
+        if (snapshotType.equalsIgnoreCase("view-port")) {
+            page = getPageViewPortSnapshot(driver);
+        } else if (snapshotType.equalsIgnoreCase("full")) {
+            page = getPageFullSnapshot(driver);
+        }
+        return page;
+    }
+
+    private static BufferedImage getPageFullSnapshot(WebDriver driver) {
+        BufferedImage page = null;
+        try {
+            Screenshot screenshot = new AShot()
+                    .shootingStrategy(ShootingStrategies.viewportPasting(1000))
+                    .takeScreenshot(driver);
+            page = screenshot.getImage();
+        } catch (Exception e) {
+            throw new EyeSpyException("Unable to get page snapshot", e);
+        }
+        return page;
+    }
+
+    private static BufferedImage getPageViewPortSnapshot(WebDriver driver) {
         File screen = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
         BufferedImage page = null;
         try {
@@ -28,11 +56,11 @@ public class ImageUtil {
         return page;
     }
 
-    public static BufferedImage getElementSnapshot(WebDriver driver, WebElement element) {
+    public static BufferedImage getElementSnapshot(WebDriver driver, WebElement element,String snapshotType) {
         Point p = element.getLocation();
         int width = element.getSize().getWidth();
         int height = element.getSize().getHeight();
-        return getPageSnapshot(driver).getSubimage(p.getX(), p.getY(), width, height);
+        return getPageSnapshot(driver,snapshotType).getSubimage(p.getX(), p.getY(), width, height);
     }
 
     public static BufferedImage maskElement(BufferedImage img, WebElement element) {

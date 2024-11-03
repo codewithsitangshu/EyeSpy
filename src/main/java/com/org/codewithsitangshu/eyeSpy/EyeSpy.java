@@ -27,6 +27,7 @@ public class EyeSpy {
         private Path resultpath;
         private int similarity = 100;
         private boolean savesnapshot = true;
+        private String snapshotType = "view-port";
 
         private EyeSpyConfigImpl() {};
 
@@ -51,6 +52,12 @@ public class EyeSpy {
             this.resultpath = path;
             resolvePath(path);
             return this;
+        }
+
+        @Override
+        public EyeSpyConfig setSnapshotType(String snapshotType) {
+            this.snapshotType = snapshotType;
+            return null;
         }
 
         public EyeSpyConfig setGlobalSimilarity(int cutoff) {
@@ -82,6 +89,11 @@ public class EyeSpy {
 
         public boolean canSaveSnapshot() {
             return this.savesnapshot;
+        }
+
+        @Override
+        public String getSnapshotType() {
+            return snapshotType;
         }
 
         public void reset() {

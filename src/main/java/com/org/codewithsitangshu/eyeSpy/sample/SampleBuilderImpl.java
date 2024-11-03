@@ -1,6 +1,7 @@
 package com.org.codewithsitangshu.eyeSpy.sample;
 
 import com.org.codewithsitangshu.eyeSpy.EyeSpy;
+import com.org.codewithsitangshu.eyeSpy.EyeSpyConfig;
 import com.org.codewithsitangshu.eyeSpy.comparator.EyeSpyComparator;
 import com.org.codewithsitangshu.eyeSpy.comparator.EyeSpyResult;
 import com.org.codewithsitangshu.eyeSpy.comparator.ImageUtil;
@@ -45,7 +46,7 @@ public class SampleBuilderImpl implements SampleBuilder {
     }
 
     public SampleBuilder element(WebElement element) {
-        this.sample = ImageUtil.getElementSnapshot(this.driver, element);
+        this.sample = ImageUtil.getElementSnapshot(this.driver, element,snapshotType());
         return this;
     }
 
@@ -65,14 +66,23 @@ public class SampleBuilderImpl implements SampleBuilder {
     }
 
     public EyeSpyResult compare() {
-        if(null==this.sample){
-            this.sample =ImageUtil.getPageSnapshot(this.driver);
+        if (null == this.sample) {
+            this.sample = ImageUtil.getPageSnapshot(this.driver,snapshotType());
         }
         return EyeSpyComparator.compare(this.snapshotAttributes, this.sample, this.sampleAttributes, this.exclusionList);
     }
 
     private void resolvePath() {
         sampleAttributes.setSamplePath(EyeSpy.config().getSamplePath().resolve(snapshotAttributes.getSnapValue()));
+    }
+
+    private String snapshotType() {
+        String snapshotType = !this.snapshotAttributes.getType().equals("") ? this.snapshotAttributes.getType() :
+                EyeSpy.config().getSnapshotType();
+        if (!snapshotType.equalsIgnoreCase("view-port") && !snapshotType.equalsIgnoreCase("full")) {
+            throw new EyeSpyException("Snapshot type is not valid");
+        }
+        return snapshotType;
     }
 
 
