@@ -38,7 +38,7 @@ public class BaseTest {
                 .setSnapshotPath(Paths.get("images/baseline"))
                 .setSamplePath(Paths.get("images/current"))
                 //.setGlobalSimilarity(100)
-                .isSaveSnapshot(true);
+                .setSaveSnapshot(true);
     }
 
     @BeforeMethod

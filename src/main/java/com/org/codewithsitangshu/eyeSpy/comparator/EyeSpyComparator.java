@@ -1,7 +1,8 @@
 package com.org.codewithsitangshu.eyeSpy.comparator;
 
-import com.org.codewithsitangshu.eyeSpy.EyeSpy;
+import com.org.codewithsitangshu.eyeSpy.image.MaskingImage;
 import com.org.codewithsitangshu.eyeSpy.exception.EyeSpyException;
+import com.org.codewithsitangshu.eyeSpy.image.StoreImage;
 import com.org.codewithsitangshu.eyeSpy.sample.SampleAttributes;
 import com.org.codewithsitangshu.eyeSpy.snapshot.SnapshotAttributes;
 import org.arquillian.rusheye.comparison.ImageComparator;
@@ -22,29 +23,23 @@ public class EyeSpyComparator {
     public static EyeSpyResult compare(SnapshotAttributes snapshotAttribute, BufferedImage sample,
                                        SampleAttributes sampleAttributes, List<WebElement> exclusionList) {
 
-        final File patternFile = snapshotAttribute.getSnapshotPath().toFile();
+        final File snapFile = snapshotAttribute.getSnapshotPath().toFile();
         final File sampleFile = sampleAttributes.getSamplePath().toFile();
-
-        if(!patternFile.exists() && EyeSpy.config().canSaveSnapshot()){
-            ImageUtil.saveImage(sample, patternFile);
-        }
-
-        ImageUtil.saveImage(sample,sampleFile);
+        MaskingImage maskingImage = new MaskingImage();
+        StoreImage storeImage = new StoreImage();
 
         //pattern
-        BufferedImage pattern = getImage(patternFile);
-        pattern = ImageUtil.maskElements(pattern, exclusionList);
+        BufferedImage snap = getImage(snapFile);
+        snap = maskingImage.maskElements(snap, exclusionList);
 
         //sample
-        sample = ImageUtil.maskElements(sample, exclusionList);
+        sample = maskingImage.maskElements(sample, exclusionList);
 
-        ComparisonResult result = imageComparator.compare(pattern,
-                sample,
+        ComparisonResult result = imageComparator.compare(snap, sample,
                 snapshotAttribute.getPerception(),
                 snapshotAttribute.getMasks());
 
-        File outputFile = EyeSpy.config().getResultPath().resolve(snapshotAttribute.getSnapshotPath().getFileName()).toFile();
-        ImageUtil.saveImage(result.getDiffImage(), outputFile);
+        storeImage.storeOutput(result.getDiffImage(),snapshotAttribute);
         return new EyeSpyResult(result, snapshotAttribute.getSimilarity());
     }
 
@@ -53,7 +48,6 @@ public class EyeSpyComparator {
         try {
             pattern = ImageIO.read(file);
         } catch (IOException e) {
-
             throw new EyeSpyException(e.getMessage() + " - " + file.getAbsolutePath());
         }
         return pattern;

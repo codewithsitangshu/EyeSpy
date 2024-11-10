@@ -17,7 +17,7 @@
     <log4j-core.version>2.23.1</log4j-core.version>
     <testng.version>7.10.2</testng.version>
     <assertj-core.version>3.25.3</assertj-core.version>
-    <ashot.version>1.5.4</ashot.version>
+    <appium.version>9.3.0</appium.version>
   </properties>
 
   <build>
@@ -41,9 +41,9 @@
     </dependency>
 
     <dependency>
-      <groupId>ru.yandex.qatools.ashot</groupId>
-      <artifactId>ashot</artifactId>
-      <version>${ashot.version}</version>
+      <groupId>io.appium</groupId>
+      <artifactId>java-client</artifactId>
+      <version>${appium.version}</version>
     </dependency>
 
     <dependency>

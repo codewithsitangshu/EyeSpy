@@ -26,8 +26,8 @@ public class EyeSpy {
         private Path currentSnapshotpath;
         private Path resultpath;
         private int similarity = 100;
-        private boolean savesnapshot = true;
-        private String snapshotType = "view-port";
+        private boolean saveSnapshot = true;
+        private String device = "web";
 
         private EyeSpyConfigImpl() {};
 
@@ -55,8 +55,8 @@ public class EyeSpy {
         }
 
         @Override
-        public EyeSpyConfig setSnapshotType(String snapshotType) {
-            this.snapshotType = snapshotType;
+        public EyeSpyConfig setDevice(String device) {
+            this.device = this.device.toLowerCase();
             return null;
         }
 
@@ -78,22 +78,23 @@ public class EyeSpy {
             return resultpath;
         }
 
+
         public int getGlobalSimilarity() {
             return similarity;
         }
 
-        public EyeSpyConfig isSaveSnapshot(boolean save) {
-            this.savesnapshot = save;
+        public EyeSpyConfig setSaveSnapshot(boolean save) {
+            this.saveSnapshot = save;
             return this;
         }
 
-        public boolean canSaveSnapshot() {
-            return this.savesnapshot;
+        public boolean isSaveSnapshot() {
+            return this.saveSnapshot;
         }
 
         @Override
-        public String getSnapshotType() {
-            return snapshotType;
+        public String getDevice() {
+            return device;
         }
 
         public void reset() {
@@ -101,7 +102,7 @@ public class EyeSpy {
             this.currentSnapshotpath = null;
             this.resultpath = null;
             this.similarity = 100;
-            this.savesnapshot = true;
+            this.saveSnapshot = true;
         }
 
         private void resolvePath(Path path) {

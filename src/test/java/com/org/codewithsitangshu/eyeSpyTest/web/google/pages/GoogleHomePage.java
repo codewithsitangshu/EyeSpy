@@ -10,7 +10,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
-@Snap(value = "Google-#{Title}.png",similarity = 100,type = "full")
+@Snap(value = "Google-#{Title}.png",similarity = 100)
 public class GoogleHomePage {
 
     @FindBy(css = "div.RNNXgb")
@@ -32,38 +32,36 @@ public class GoogleHomePage {
         logger.info("Navigated to Google homepage.");
     }
 
-    public EyeSpyResult compareWholePage() {
+    public EyeSpyResult compareHomePage() {
         return EyeSpy.snapshot()
                 .from(this)
-                .replaceAttribute("Title","HomePage")
+                .replaceValuePlaceholder("Title","HomePage")
                 .sample()
                 .using(driver)
+                .capture()
                 .compare();
     }
 
     public EyeSpyResult compareSearchBoxOnly() {
         return EyeSpy.snapshot()
                 .from(this)
-                .replaceAttribute("Title","SearchBox")
+                .replaceValuePlaceholder("Title","SearchBox")
                 .sample()
                 .using(driver)
-                .element(searchBox)
+                .including(searchBox)
+                .capture()
                 .compare();
     }
 
-    public EyeSpyResult compareSearchBoxIgnoreMic() {
+    public EyeSpyResult compareHomePageIgnoreMic() {
         return EyeSpy.snapshot()
                 .from(this)
-                .replaceAttribute("Title","SearchBox-ignoreMic")
+                .replaceValuePlaceholder("Title","HomePage-ignoreMic")
                 .sample()
                 .using(driver)
-                .element(searchBox)
                 .excluding(mic)
+                .capture()
                 .compare();
     }
-
-
-
-
 
 }

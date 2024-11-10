@@ -27,7 +27,7 @@ public class GoogleTest extends BaseTest {
 
     @Test
     public void googleHomePageTest() {
-        EyeSpyResult result = googleHomePage.compareWholePage();
+        EyeSpyResult result = googleHomePage.compareHomePage();
         Assert.assertEquals(result.getSimilarity(), 100, "Home page is mismatched with sample one." +
                 "Mismatch % is " + (100 - result.getSimilarity()));
     }
@@ -40,9 +40,9 @@ public class GoogleTest extends BaseTest {
     }
 
     @Test
-    public void matchSearchBoxWithoutMicTest() {
-        EyeSpyResult result = googleHomePage.compareSearchBoxIgnoreMic();
-        Assert.assertEquals(result.getSimilarity(), 100, "Search box without Mic is mismatched with sample one." +
+    public void matchHomePageWithoutMicTest() {
+        EyeSpyResult result = googleHomePage.compareHomePageIgnoreMic();
+        Assert.assertEquals(result.getSimilarity(), 100, "Home Page without Mic is mismatched with sample one." +
                 "Mismatch % is " + (100 - result.getSimilarity()));
     }
 

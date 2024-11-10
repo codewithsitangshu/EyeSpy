@@ -3,29 +3,25 @@ package com.org.codewithsitangshu.eyeSpy;
 import java.nio.file.Path;
 
 public interface EyeSpyConfig {
+
     public EyeSpyConfig setSnapshotPath(Path path);
-
-    public EyeSpyConfig setSamplePath(Path path);
-
-    public EyeSpyConfig setResultPath(Path path);
-
-    public EyeSpyConfig setSnapshotType(String snapshotType);
-
-    public EyeSpyConfig setGlobalSimilarity(int cutoff);
-
-    public EyeSpyConfig isSaveSnapshot(boolean save);
-
     public Path getSnapshotPath();
 
+    public EyeSpyConfig setSamplePath(Path path);
     public Path getSamplePath();
 
+    public EyeSpyConfig setResultPath(Path path);
     public Path getResultPath();
 
+    public EyeSpyConfig setDevice(String device);
+    public String getDevice();
+
+    public EyeSpyConfig setGlobalSimilarity(int cutoff);
     public int getGlobalSimilarity();
 
-    public boolean canSaveSnapshot();
-
-    public String getSnapshotType();
+    public EyeSpyConfig setSaveSnapshot(boolean save);
+    public boolean isSaveSnapshot();
 
     public void reset();
+
 }
