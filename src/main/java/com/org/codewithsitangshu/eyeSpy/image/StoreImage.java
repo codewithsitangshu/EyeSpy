@@ -1,6 +1,6 @@
 package com.org.codewithsitangshu.eyeSpy.image;
 
-import com.org.codewithsitangshu.eyeSpy.EyeSpy;
+import com.org.codewithsitangshu.eyeSpy.Eye;
 import com.org.codewithsitangshu.eyeSpy.exception.EyeSpyException;
 import com.org.codewithsitangshu.eyeSpy.sample.SampleAttributes;
 import com.org.codewithsitangshu.eyeSpy.snapshot.SnapshotAttributes;
@@ -19,13 +19,13 @@ public class StoreImage {
 
     public void storeSnap(BufferedImage sample, SnapshotAttributes snapshotAttribute) {
         File snapFile = snapshotAttribute.getSnapshotPath().toFile();
-        if (!snapFile.exists() && EyeSpy.config().isSaveSnapshot()) {
+        if (!snapFile.exists() && Eye.open().isSaveSnapshot()) {
             saveImage(sample, snapFile);
         }
     }
 
     public void storeOutput(BufferedImage output, SnapshotAttributes snapshotAttribute) {
-        File outputFile = EyeSpy.config().getResultPath().resolve(snapshotAttribute.getSnapshotPath().getFileName()).toFile();
+        File outputFile = Eye.open().getResultPath().resolve(snapshotAttribute.getSnapshotPath().getFileName()).toFile();
         saveImage(output, outputFile);
     }
 

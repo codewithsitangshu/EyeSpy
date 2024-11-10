@@ -1,12 +1,13 @@
 package com.org.codewithsitangshu.eyeSpy.sample;
 
-import com.org.codewithsitangshu.eyeSpy.EyeSpy;
+import com.org.codewithsitangshu.eyeSpy.Eye;
 import com.org.codewithsitangshu.eyeSpy.capture.Capture;
 import com.org.codewithsitangshu.eyeSpy.capture.CaptureMobile;
 import com.org.codewithsitangshu.eyeSpy.capture.CaptureWeb;
 import com.org.codewithsitangshu.eyeSpy.comparator.EyeSpyComparator;
 import com.org.codewithsitangshu.eyeSpy.comparator.EyeSpyResult;
 import com.org.codewithsitangshu.eyeSpy.exception.EyeSpyException;
+import com.org.codewithsitangshu.eyeSpy.image.Masking;
 import com.org.codewithsitangshu.eyeSpy.image.StoreImage;
 import com.org.codewithsitangshu.eyeSpy.snapshot.SnapshotAttributes;
 import io.appium.java_client.AppiumDriver;
@@ -29,12 +30,16 @@ public class SampleBuilderImpl implements SampleBuilder {
     private final SnapshotAttributes snapshotAttributes;
     private SampleAttributes sampleAttributes;
     private final StoreImage storeImage;
+    private Masking masking;
+    private final EyeSpyComparator eyeSpyComparator;
 
     public SampleBuilderImpl(SnapshotAttributes snapshotAttributes) {
         this.snapshotAttributes = snapshotAttributes;
         excludeElements = new LinkedList<>();
         sampleAttributes = new SampleAttributes();
         storeImage = new StoreImage();
+        masking = Masking.COMPARE;
+        eyeSpyComparator = new EyeSpyComparator();
     }
 
     @Override
@@ -87,12 +92,18 @@ public class SampleBuilderImpl implements SampleBuilder {
     }
 
     @Override
+    public SampleBuilder masking(Masking masking) {
+        this.masking = masking;
+        return this;
+    }
+
+    @Override
     public SampleBuilder capture() {
         if (null == this.sample) {
             if (includeElement == null) {
-                this.sample = this.capture.capturePageSnapshot();
+                this.sample = this.capture.capturePageSnapshot(this.masking,excludeElements);
             } else {
-                this.sample = this.capture.captureSnapshotElement(includeElement);
+                this.sample = this.capture.captureSnapshotElement(this.masking,includeElement,excludeElements);
             }
         }
         this.storeImage.storeSnap(this.sample,this.snapshotAttributes);
@@ -102,11 +113,11 @@ public class SampleBuilderImpl implements SampleBuilder {
 
     @Override
     public EyeSpyResult compare() {
-        return EyeSpyComparator.compare(this.snapshotAttributes, this.sample, this.sampleAttributes, this.excludeElements);
+        return this.eyeSpyComparator.compare(this.snapshotAttributes, this.sample, this.sampleAttributes, this.excludeElements,this.masking);
     }
 
     private void resolvePath() {
-        sampleAttributes.setSamplePath(EyeSpy.config().getSamplePath().resolve(snapshotAttributes.getSnapValue()));
+        sampleAttributes.setSamplePath(Eye.open().getSamplePath().resolve(snapshotAttributes.getSnapValue()));
     }
 
 

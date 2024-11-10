@@ -1,7 +1,8 @@
 package com.org.codewithsitangshu.eyeSpy.comparator;
 
-import com.org.codewithsitangshu.eyeSpy.image.MaskingImage;
 import com.org.codewithsitangshu.eyeSpy.exception.EyeSpyException;
+import com.org.codewithsitangshu.eyeSpy.image.Masking;
+import com.org.codewithsitangshu.eyeSpy.image.MaskingImage;
 import com.org.codewithsitangshu.eyeSpy.image.StoreImage;
 import com.org.codewithsitangshu.eyeSpy.sample.SampleAttributes;
 import com.org.codewithsitangshu.eyeSpy.snapshot.SnapshotAttributes;
@@ -18,22 +19,27 @@ import java.util.List;
 
 public class EyeSpyComparator {
 
-    private static final ImageComparator imageComparator = new DefaultImageComparator();
+    private final ImageComparator imageComparator;
 
-    public static EyeSpyResult compare(SnapshotAttributes snapshotAttribute, BufferedImage sample,
-                                       SampleAttributes sampleAttributes, List<WebElement> exclusionList) {
+    public EyeSpyComparator() {
+        imageComparator = new DefaultImageComparator();
+    }
+
+    public EyeSpyResult compare(SnapshotAttributes snapshotAttribute, BufferedImage sample,
+                                SampleAttributes sampleAttributes, List<WebElement> exclusionList, Masking masking) {
 
         final File snapFile = snapshotAttribute.getSnapshotPath().toFile();
         final File sampleFile = sampleAttributes.getSamplePath().toFile();
         MaskingImage maskingImage = new MaskingImage();
         StoreImage storeImage = new StoreImage();
 
-        //pattern
         BufferedImage snap = getImage(snapFile);
-        snap = maskingImage.maskElements(snap, exclusionList);
 
-        //sample
-        sample = maskingImage.maskElements(sample, exclusionList);
+        //Mask Snap and Sample image
+        if(masking == Masking.COMPARE) {
+            snap = maskingImage.maskElements(snap, exclusionList);
+            sample = maskingImage.maskElements(sample, exclusionList);
+        }
 
         ComparisonResult result = imageComparator.compare(snap, sample,
                 snapshotAttribute.getPerception(),
@@ -43,7 +49,7 @@ public class EyeSpyComparator {
         return new EyeSpyResult(result, snapshotAttribute.getSimilarity());
     }
 
-    private static BufferedImage getImage(final File file){
+    private BufferedImage getImage(final File file){
         BufferedImage pattern = null;
         try {
             pattern = ImageIO.read(file);

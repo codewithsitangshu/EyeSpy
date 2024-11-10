@@ -1,7 +1,8 @@
 package com.org.codewithsitangshu.eyeSpyTest.web.google.pages;
 
-import com.org.codewithsitangshu.eyeSpy.EyeSpy;
+import com.org.codewithsitangshu.eyeSpy.Eye;
 import com.org.codewithsitangshu.eyeSpy.comparator.EyeSpyResult;
+import com.org.codewithsitangshu.eyeSpy.image.Masking;
 import com.org.codewithsitangshu.eyeSpy.snapshot.Snap;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -19,6 +20,9 @@ public class GoogleHomePage {
     @FindBy(css = "div[aria-label='Search by voice']")
     private WebElement mic;
 
+    @FindBy(css = "div[aria-label='Search by image']")
+    private WebElement searchByImage;
+
     private WebDriver driver;
     private static final Logger logger = LogManager.getLogger(GoogleHomePage.class);
 
@@ -33,7 +37,7 @@ public class GoogleHomePage {
     }
 
     public EyeSpyResult compareHomePage() {
-        return EyeSpy.snapshot()
+        return Eye.snapshot()
                 .from(this)
                 .replaceValuePlaceholder("Title","HomePage")
                 .sample()
@@ -43,7 +47,7 @@ public class GoogleHomePage {
     }
 
     public EyeSpyResult compareSearchBoxOnly() {
-        return EyeSpy.snapshot()
+        return Eye.snapshot()
                 .from(this)
                 .replaceValuePlaceholder("Title","SearchBox")
                 .sample()
@@ -54,12 +58,39 @@ public class GoogleHomePage {
     }
 
     public EyeSpyResult compareHomePageIgnoreMic() {
-        return EyeSpy.snapshot()
+        return Eye.snapshot()
                 .from(this)
                 .replaceValuePlaceholder("Title","HomePage-ignoreMic")
                 .sample()
                 .using(driver)
                 .excluding(mic)
+                .capture()
+                .compare();
+    }
+
+    public EyeSpyResult compareSearchBoxIgnoreMic() {
+        return Eye.snapshot()
+                .from(this)
+                .replaceValuePlaceholder("Title","SearchBox-ignoreMic")
+                .sample()
+                .using(driver)
+                .including(searchBox)
+                .excluding(mic)
+                .masking(Masking.SAMPLE)
+                .capture()
+                .compare();
+    }
+
+    public EyeSpyResult compareSearchBoxIgnoreMicAndImage() {
+        return Eye.snapshot()
+                .from(this)
+                .replaceValuePlaceholder("Title","SearchBox-ignoreMicAndImage")
+                .sample()
+                .using(driver)
+                .including(searchBox)
+                .excluding(mic)
+                .excluding(searchByImage)
+                .masking(Masking.SAMPLE)
                 .capture()
                 .compare();
     }

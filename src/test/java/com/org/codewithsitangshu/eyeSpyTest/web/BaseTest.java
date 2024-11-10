@@ -1,6 +1,6 @@
 package com.org.codewithsitangshu.eyeSpyTest.web;
 
-import com.org.codewithsitangshu.eyeSpy.EyeSpy;
+import com.org.codewithsitangshu.eyeSpy.Eye;
 import com.org.codewithsitangshu.util.driver.DriverManager;
 import com.org.codewithsitangshu.util.driver.DriverModule;
 import com.org.codewithsitangshu.util.driver.DriverType;
@@ -16,11 +16,14 @@ public class BaseTest {
     private static final Logger logger = LogManager.getLogger(BaseTest.class);
     DriverManager driverManager;
     protected WebDriver driver;
+    private final String snapshotPath = "images/baseline";
+    private final String samplePath = "images/current";
+    private final String resultPath = "images/result";
+    private final boolean isSaveSnapshot = true;
 
     @BeforeTest
     @Parameters("browser")
-    public void beforeTest(@Optional("Chrome") String browser) {
-        logger.info("Starting beforeTest method...");
+    public void initDriver(@Optional("Chrome") String browser) {
         try {
             logger.info("Initializing driver manager...");
             driverManager = DriverModule.getManager(DriverType.valueOf(browser.toUpperCase()));
@@ -31,32 +34,41 @@ public class BaseTest {
         }
     }
 
-    @BeforeTest
-    public void eyeSpyConfig() {
-        EyeSpy.config()
-                .setResultPath(Paths.get("images/result"))
-                .setSnapshotPath(Paths.get("images/baseline"))
-                .setSamplePath(Paths.get("images/current"))
+    @BeforeTest()
+    public void openEye() {
+        Eye.open()
+                .setResultPath(Paths.get(resultPath))
+                .setSnapshotPath(Paths.get(snapshotPath))
+                .setSamplePath(Paths.get(samplePath))
                 //.setGlobalSimilarity(100)
-                .setSaveSnapshot(true);
+                .setSaveSnapshot(isSaveSnapshot);
+        logger.info("Open Eye with below configuration.");
+        logger.info("Snapshot Path : " + snapshotPath);
+        logger.info("Sample Path : " + samplePath);
+        logger.info("Result Path : " + resultPath);
+        logger.info("Save Snapshot : " + isSaveSnapshot);
     }
 
     @BeforeMethod
-    public void beforeMethod() {
-        logger.info("Starting beforeMethod method...");
+    public void getDriver() {
         driver = driverManager.getDriver();
         logger.info("WebDriver instance obtained successfully.");
     }
 
     @AfterTest
-    public void afterTest() {
-        logger.info("Starting afterTest method...");
+    public void quitDriver() {
         driverManager.quitDriver();
         logger.info("WebDriver quit successfully.");
     }
 
+    @AfterTest
+    public void closeEye() {
+        Eye.close();
+        logger.info("Close the Eye.");
+    }
+
     @AfterSuite
-    public void afterSuite() {
+    public void stopDriverService() {
         logger.info("Starting afterSuite method...");
         driverManager.stopService();
         logger.info("Driver service stopped successfully.");

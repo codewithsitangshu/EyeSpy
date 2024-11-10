@@ -1,7 +1,7 @@
 package com.org.codewithsitangshu.eyeSpy.image;
 
 import org.openqa.selenium.Point;
-import org.openqa.selenium.*;
+import org.openqa.selenium.WebElement;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;

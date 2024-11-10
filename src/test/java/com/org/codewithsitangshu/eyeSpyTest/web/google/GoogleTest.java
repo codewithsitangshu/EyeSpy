@@ -40,6 +40,20 @@ public class GoogleTest extends BaseTest {
     }
 
     @Test
+    public void matchSearchBoxWithoutMicTest() {
+        EyeSpyResult result = googleHomePage.compareSearchBoxIgnoreMic();
+        Assert.assertEquals(result.getSimilarity(), 100, "Search Box without Mic is mismatched with sample one." +
+                "Mismatch % is " + (100 - result.getSimilarity()));
+    }
+
+    @Test
+    public void matchSearchBoxWithoutMicAndImageTest() {
+        EyeSpyResult result = googleHomePage.compareSearchBoxIgnoreMicAndImage();
+        Assert.assertEquals(result.getSimilarity(), 100, "Search Box without Mic and Image is mismatched with sample one." +
+                "Mismatch % is " + (100 - result.getSimilarity()));
+    }
+
+    @Test
     public void matchHomePageWithoutMicTest() {
         EyeSpyResult result = googleHomePage.compareHomePageIgnoreMic();
         Assert.assertEquals(result.getSimilarity(), 100, "Home Page without Mic is mismatched with sample one." +
