@@ -36,7 +36,7 @@ public class EyeSpyResult extends ComparisonResult {
 
     @Override
     public String toString() {
-        return "OcularResult [equalsImages=" + isEqualsImages() +
+        return "EyeSpy Result [equalsImages=" + isEqualsImages() +
                 ", totalPixels=" + getTotalPixels() +
                 ", maskedPixels=" + getMaskedPixels() +
                 ", perceptibleDiffs=" + getPerceptibleDiffs() +

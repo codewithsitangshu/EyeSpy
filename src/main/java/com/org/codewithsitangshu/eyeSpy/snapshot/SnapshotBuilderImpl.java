@@ -1,6 +1,6 @@
 package com.org.codewithsitangshu.eyeSpy.snapshot;
 
-import com.org.codewithsitangshu.eyeSpy.EyeSpy;
+import com.org.codewithsitangshu.eyeSpy.Eye;
 import com.org.codewithsitangshu.eyeSpy.exception.EyeSpyException;
 import com.org.codewithsitangshu.eyeSpy.sample.SampleBuilder;
 import com.org.codewithsitangshu.eyeSpy.sample.SampleBuilderImpl;
@@ -31,12 +31,13 @@ public class SnapshotBuilderImpl implements SnapshotBuilder {
     }
 
     @Override
-    public SnapshotBuilder replaceAttribute(String id, String value) {
-        String newPath = snapshotAttributes.getSnapshotPath().toString().replaceAll("\\#\\{" + id + "}", value);
-        Path path = Paths.get(newPath);
+    public SnapshotBuilder replaceValuePlaceholder(String placeholder, String value) {
+        String newPlaceholderValue = snapshotAttributes.getSnapshotPath()
+                .toString().replaceAll("\\#\\{" + placeholder + "}", value);
+        Path path = Paths.get(newPlaceholderValue);
         String fileName = path.getFileName().toString();
 
-        snapshotAttributes.setSnapshotPath(Paths.get(newPath));
+        snapshotAttributes.setSnapshotPath(Paths.get(newPlaceholderValue));
         snapshotAttributes.setSnapValue(fileName);
         return this;
     }
@@ -44,10 +45,10 @@ public class SnapshotBuilderImpl implements SnapshotBuilder {
     @Override
     public SampleBuilder sample() {
         int similarity = this.snapshotAttributes.getSimilarity() > -1 ?
-                this.snapshotAttributes.getSimilarity() : EyeSpy.config().getGlobalSimilarity();
+                this.snapshotAttributes.getSimilarity() : Eye.open().getGlobalSimilarity();
 
-        if(similarity<0 && similarity >100){
-            throw new IllegalArgumentException("Similarity should be between 0 and 100. But the actual is " + similarity);
+        if(similarity<=0 || similarity >100){
+            throw new IllegalArgumentException("Similarity should be between 1 and 100. But the actual is " + similarity);
         }
 
         snapshotAttributes.setSimilarity(similarity);
@@ -61,14 +62,13 @@ public class SnapshotBuilderImpl implements SnapshotBuilder {
 
         Snap snap = klass.getAnnotation(Snap.class);
         snapshotAttributes.setSimilarity(snap.similarity());
-        snapshotAttributes.setType(snap.type());
         String snapValue = snap.value();
         snapshotAttributes.setSnapValue(snapValue);
         resolvePath(Paths.get(snapValue));
     }
 
     private void resolvePath(Path path){
-        path = path.isAbsolute() ? path : EyeSpy.config().getSnapshotPath().resolve(path);
+        path = path.isAbsolute() ? path : Eye.open().getSnapshotPath().resolve(path);
         this.snapshotAttributes.setSnapshotPath(path);
     }
 

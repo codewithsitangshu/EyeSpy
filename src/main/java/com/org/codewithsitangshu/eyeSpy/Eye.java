@@ -8,59 +8,60 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-public class EyeSpy {
+public class Eye {
 
     public static SnapshotBuilder snapshot(){
         return new SnapshotBuilderImpl();
     }
 
-    public static EyeSpyConfig config(){
-        return EyeSpyConfigImpl.get();
+    public static EyeConfig open(){
+        return config();
     }
 
-    private static class EyeSpyConfigImpl implements EyeSpyConfig {
+    public static EyeConfig config(){
+        return EyeConfigImpl.get();
+    }
 
-        private static final EyeSpyConfig config = new EyeSpyConfigImpl();
+    public static void close(){
+        EyeConfigImpl.get().close();
+    }
+
+    private static class EyeConfigImpl implements EyeConfig {
+
+        private static final EyeConfig config = new EyeConfigImpl();
 
         private Path baselineSnapshotpath;
         private Path currentSnapshotpath;
         private Path resultpath;
         private int similarity = 100;
-        private boolean savesnapshot = true;
-        private String snapshotType = "view-port";
+        private boolean saveSnapshot = true;
 
-        private EyeSpyConfigImpl() {};
+        private EyeConfigImpl() {};
 
-        public static EyeSpyConfig get(){
+        public static EyeConfig get(){
             return config;
         }
 
-        public EyeSpyConfig setSnapshotPath(Path path) {
+        public EyeConfig setSnapshotPath(Path path) {
             this.baselineSnapshotpath = path;
             resolvePath(path);
             return this;
         }
 
         @Override
-        public EyeSpyConfig setSamplePath(Path path) {
+        public EyeConfig setSamplePath(Path path) {
             this.currentSnapshotpath = path;
             resolvePath(path);
             return this;
         }
 
-        public EyeSpyConfig setResultPath(Path path) {
+        public EyeConfig setResultPath(Path path) {
             this.resultpath = path;
             resolvePath(path);
             return this;
         }
 
-        @Override
-        public EyeSpyConfig setSnapshotType(String snapshotType) {
-            this.snapshotType = snapshotType;
-            return null;
-        }
-
-        public EyeSpyConfig setGlobalSimilarity(int cutoff) {
+        public EyeConfig setGlobalSimilarity(int cutoff) {
             this.similarity = cutoff;
             return this;
         }
@@ -78,30 +79,26 @@ public class EyeSpy {
             return resultpath;
         }
 
+
         public int getGlobalSimilarity() {
             return similarity;
         }
 
-        public EyeSpyConfig isSaveSnapshot(boolean save) {
-            this.savesnapshot = save;
+        public EyeConfig setSaveSnapshot(boolean save) {
+            this.saveSnapshot = save;
             return this;
         }
 
-        public boolean canSaveSnapshot() {
-            return this.savesnapshot;
+        public boolean isSaveSnapshot() {
+            return this.saveSnapshot;
         }
 
-        @Override
-        public String getSnapshotType() {
-            return snapshotType;
-        }
-
-        public void reset() {
+        public void close() {
             this.baselineSnapshotpath = null;
             this.currentSnapshotpath = null;
             this.resultpath = null;
             this.similarity = 100;
-            this.savesnapshot = true;
+            this.saveSnapshot = true;
         }
 
         private void resolvePath(Path path) {

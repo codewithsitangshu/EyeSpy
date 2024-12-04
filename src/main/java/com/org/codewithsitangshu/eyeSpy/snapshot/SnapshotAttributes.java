@@ -12,7 +12,7 @@ public class SnapshotAttributes {
     private Path snapshotPath;
     private int similarity = -1;
     private String snapValue;
-    private String type;
+    private String device;
 
     public Path getSnapshotPath() {
         return snapshotPath;
@@ -38,14 +38,6 @@ public class SnapshotAttributes {
         this.snapValue = snapValue;
     }
 
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
     public Perception getPerception(){
         Perception perception = new Perception();
         perception.setOnePixelTreshold(0f);
@@ -56,4 +48,5 @@ public class SnapshotAttributes {
     public Set<Mask> getMasks(){
         return new HashSet<Mask>();
     }
+
 }
