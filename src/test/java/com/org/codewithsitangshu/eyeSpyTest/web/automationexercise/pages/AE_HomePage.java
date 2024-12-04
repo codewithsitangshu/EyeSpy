@@ -1,4 +1,4 @@
-package com.org.codewithsitangshu.eyeSpyTest.web.pages;
+package com.org.codewithsitangshu.eyeSpyTest.web.automationexercise.pages;
 
 import com.org.codewithsitangshu.eyeSpy.Eye;
 import com.org.codewithsitangshu.eyeSpy.comparator.EyeSpyResult;
@@ -12,13 +12,13 @@ import org.openqa.selenium.support.PageFactory;
 import java.util.ArrayList;
 import java.util.List;
 
-@Snap(value = "Home-#{Title}.png",similarity = 90)
-public class HomePage {
+@Snap(value = "AE-Home-#{Title}.png",similarity = 90)
+public class AE_HomePage {
 
     private WebDriver driver;
-    private static final Logger logger = LogManager.getLogger(HomePage.class);
+    private static final Logger logger = LogManager.getLogger(AE_HomePage.class);
 
-    public HomePage(WebDriver driver) {
+    public AE_HomePage(WebDriver driver) {
         this.driver = driver;
         PageFactory.initElements(driver,this);
     }
@@ -57,6 +57,16 @@ public class HomePage {
             screenshotCount++;
         }
         return eyeSpyResults;
+    }
+
+    public EyeSpyResult compareViewPortHomePage() {
+        return Eye.snapshot()
+                .from(this)
+                .replaceValuePlaceholder("Title","View-Port")
+                .sample()
+                .using(driver)
+                .capture()
+                .compare();
     }
 
 }

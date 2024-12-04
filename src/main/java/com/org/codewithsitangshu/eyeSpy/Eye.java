@@ -15,6 +15,10 @@ public class Eye {
     }
 
     public static EyeConfig open(){
+        return config();
+    }
+
+    public static EyeConfig config(){
         return EyeConfigImpl.get();
     }
 
@@ -31,7 +35,6 @@ public class Eye {
         private Path resultpath;
         private int similarity = 100;
         private boolean saveSnapshot = true;
-        private String device = "web";
 
         private EyeConfigImpl() {};
 

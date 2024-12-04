@@ -2,7 +2,7 @@
 <suite name="Google Home Page">
     <test name="Google Home Page">
         <classes>
-            <class name="com.org.codewithsitangshu.eyeSpyTest.web.test.HomePageTest"/>
+            <class name="com.org.codewithsitangshu.eyeSpyTest.web.automationexercise.AE_HomePageTest"/>
         </classes>
     </test>
 </suite>

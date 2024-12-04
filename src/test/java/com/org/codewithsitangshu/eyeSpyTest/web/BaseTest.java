@@ -16,9 +16,9 @@ public class BaseTest {
     private static final Logger logger = LogManager.getLogger(BaseTest.class);
     DriverManager driverManager;
     protected WebDriver driver;
-    private final String snapshotPath = "images/baseline";
-    private final String samplePath = "images/current";
-    private final String resultPath = "images/result";
+    private final String snapshotPath = "src/test/resources/images/baseline";
+    private final String samplePath = "src/test/resources/images/current";
+    private final String resultPath = "src/test/resources/images/result";
     private final boolean isSaveSnapshot = true;
 
     @BeforeTest

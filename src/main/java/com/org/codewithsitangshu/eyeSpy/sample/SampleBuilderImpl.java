@@ -59,7 +59,7 @@ public class SampleBuilderImpl implements SampleBuilder {
     @Override
     public SampleBuilder using(Path path) {
         try {
-            this.sample = ImageIO.read(path.toFile());
+            this.sample = ImageIO.read(resolvePath(path).toFile());
             this.sampleAttributes.setSamplePath(path);
         } catch (IOException e) {
             throw new EyeSpyException(e.getMessage() + " " + path.toString());
@@ -118,6 +118,10 @@ public class SampleBuilderImpl implements SampleBuilder {
 
     private void resolvePath() {
         sampleAttributes.setSamplePath(Eye.open().getSamplePath().resolve(snapshotAttributes.getSnapValue()));
+    }
+
+    private Path resolvePath(Path path){
+        return path.isAbsolute() ? path : Eye.open().getSamplePath().resolve(path);
     }
 
 

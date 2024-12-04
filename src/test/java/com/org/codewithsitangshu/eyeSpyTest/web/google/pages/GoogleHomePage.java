@@ -23,6 +23,9 @@ public class GoogleHomePage {
     @FindBy(css = "div[aria-label='Search by image']")
     private WebElement searchByImage;
 
+    @FindBy(css = "img[alt='Google']")
+    private WebElement logo;
+
     private WebDriver driver;
     private static final Logger logger = LogManager.getLogger(GoogleHomePage.class);
 
@@ -91,6 +94,20 @@ public class GoogleHomePage {
                 .excluding(mic)
                 .excluding(searchByImage)
                 .masking(Masking.SAMPLE)
+                .capture()
+                .compare();
+    }
+
+    public EyeSpyResult compareHomePageIgnoreMicImageLogo() {
+        return Eye.snapshot()
+                .from(GoogleHomePage.class)
+                .replaceValuePlaceholder("Title","HomePage-ignoreMicImageLogo")
+                .sample()
+                .using(driver)
+                .excluding(mic)
+                .excluding(searchByImage)
+                .excluding(logo)
+                //.masking(Masking.SAMPLE)
                 .capture()
                 .compare();
     }

@@ -1,0 +1,8 @@
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="With Snap">
+    <test name="With Sanp">
+        <classes>
+            <class name="com.org.codewithsitangshu.eyeSpyTest.withSnap.WithExistingSnapTest"/>
+        </classes>
+    </test>
+</suite>

@@ -25,38 +25,45 @@ public class GoogleTest extends BaseTest {
         logger.info("Google Test completed successfully.");
     }
 
-    @Test
+    @Test(description = "Compare Home Page")
     public void googleHomePageTest() {
         EyeSpyResult result = googleHomePage.compareHomePage();
         Assert.assertEquals(result.getSimilarity(), 100, "Home page is mismatched with sample one." +
                 "Mismatch % is " + (100 - result.getSimilarity()));
     }
 
-    @Test
+    @Test(description = "Compare only search box")
     public void matchSearchBoxOnlyTest() {
         EyeSpyResult result = googleHomePage.compareSearchBoxOnly();
         Assert.assertEquals(result.getSimilarity(), 100, "Search box is mismatched with sample one." +
                 "Mismatch % is " + (100 - result.getSimilarity()));
     }
 
-    @Test
+    @Test(description = "Compare Search box and ignore  Mic")
     public void matchSearchBoxWithoutMicTest() {
         EyeSpyResult result = googleHomePage.compareSearchBoxIgnoreMic();
         Assert.assertEquals(result.getSimilarity(), 100, "Search Box without Mic is mismatched with sample one." +
                 "Mismatch % is " + (100 - result.getSimilarity()));
     }
 
-    @Test
+    @Test(description = "Compare Search box and ignore  Mic and Image")
     public void matchSearchBoxWithoutMicAndImageTest() {
         EyeSpyResult result = googleHomePage.compareSearchBoxIgnoreMicAndImage();
         Assert.assertEquals(result.getSimilarity(), 100, "Search Box without Mic and Image is mismatched with sample one." +
                 "Mismatch % is " + (100 - result.getSimilarity()));
     }
 
-    @Test
+    @Test(description = "Compare Home page without mic")
     public void matchHomePageWithoutMicTest() {
         EyeSpyResult result = googleHomePage.compareHomePageIgnoreMic();
         Assert.assertEquals(result.getSimilarity(), 100, "Home Page without Mic is mismatched with sample one." +
+                "Mismatch % is " + (100 - result.getSimilarity()));
+    }
+
+    @Test(description = "Compare Home page without mic, image and Logo")
+    public void matchHomePageWithoutMicLogoTest() {
+        EyeSpyResult result = googleHomePage.compareHomePageIgnoreMicImageLogo();
+        Assert.assertEquals(result.getSimilarity(), 100, "Home Page without Mic, Image and Logo is mismatched with sample one." +
                 "Mismatch % is " + (100 - result.getSimilarity()));
     }
 
